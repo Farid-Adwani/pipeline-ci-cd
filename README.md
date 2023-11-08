@@ -6,5 +6,6 @@
 - GitHub account
 - Jenkins Server on Linux
 - Linux Server with docker installed
+- thank you
 
 [Tutorial here](https://youtu.be/jHkbtzemsGs)
