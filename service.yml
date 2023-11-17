@@ -9,5 +9,5 @@ spec:
   - protocol: TCP
     port: 5000  # The port the service is exposed on
     targetPort: 5000  # The container port to forward to
-    nodePort: 5000
+    nodePort: 30016
   type: LoadBalancer
