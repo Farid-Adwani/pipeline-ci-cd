@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: faridadwanii/python-jenkins-app:35  
+        image: faridadwanii/python-jenkins-app:latest  
         ports:
         - containerPort: 5000  # Replace with the port your app listens on
