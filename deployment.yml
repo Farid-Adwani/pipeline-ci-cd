@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-app-deployment
 spec:
-  replicas: 3  # The number of instances you want
+  replicas: 3  
   selector:
     matchLabels:
       app: my-app
@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: faridadwanii/python-jenkins-app  # Replace with your Docker image
+        image: faridadwanii/python-jenkins-app  
         ports:
-        - containerPort: 80  # Replace with the port your app listens on
+        - containerPort: 5000  
