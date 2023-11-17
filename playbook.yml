@@ -1,5 +1,5 @@
 ---
-- name: Update and Install Docker and Kubernetes
+- name: Update and Install Docker , Kubernetes and Nagios
   hosts: webservers
   become: true
 
@@ -70,53 +70,54 @@
       become: true
       when: ansible_swaptotal_mb > 0
 
+    - name: Install required packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+          - build-essential
+          - libgd-dev
+          - openssl
+          - libssl-dev
+          - unzip
+
+    - name: Download Nagios
+      get_url:
+        url: "https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz"
+        dest: "/tmp/nagios.tar.gz"
+
+    - name: Extract Nagios
+      unarchive:
+        src: "/tmp/nagios.tar.gz"
+        dest: "/tmp/"
+        remote_src: yes
+
+    - name: Compile and Install Nagios
+      shell: |
+        cd /tmp/nagios-4.4.6/
+        ./configure --with-httpd-conf=/etc/apache2/sites-enabled
+        make all
+        make install
+        make install-init
+        make install-config
+        make install-commandmode
+        make install-webconf
+      args:
+        creates: "/usr/local/nagios/bin/nagios"
+
+    - name: Create Nagios User and Group
+      shell: |
+        useradd nagios
+        usermod -a -G nagios www-data
+      args:
+        creates: "/home/nagios"
+
+    # Add additional tasks as necessary for configuring Nagios, setting up services, etc.
 
 
 
-    - name: Install Nagios
-    hosts: your_host_group
-    become: yes
-    tasks:
-      - name: Install required packages
-        apt:
-          name: "{{ packages }}"
-          state: present
-          update_cache: yes
-        vars:
-          packages:
-            - build-essential
-            - libgd-dev
-            - openssl
-            - libssl-dev
-            - unzip
-  
-      - name: Download Nagios
-        get_url:
-          url: "https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz"
-          dest: "/tmp/nagios.tar.gz"
-  
-      - name: Extract Nagios
-        unarchive:
-          src: "/tmp/nagios.tar.gz"
-          dest: "/tmp/"
-          remote_src: yes
-  
-      - name: Compile and Install Nagios
-        shell: |
-          cd /tmp/nagios-4.4.6/
-          ./configure --with-httpd-conf=/etc/apache2/sites-enabled
-          make all
-          make install
-          make install-init
-          make install-config
-          make install-commandmode
-          make install-webconf
-        args:
-          creates: "/usr/local/nagios/bin/nagios"
-  
-      - name: Create Nagios User and Group
-        shell: |
-          useradd nagios
-          usermod -a -G nagios www-data
-        args:
-          creates: "/home/nagios"
+
+
+   
