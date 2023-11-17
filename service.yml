@@ -7,6 +7,6 @@ spec:
     app: my-app
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 5000  
+    port: 5000  # The port the service is exposed on
+    targetPort: 5000  # The container port to forward to
   type: LoadBalancer

@@ -1,5 +1,5 @@
 ---
-- name: Update and Install Docker , Kubernetes and Nagios
+- name: Update and Install Docker, Kubernetes and Nagios
   hosts: webservers
   become: true
 
